@@ -1,0 +1,25 @@
+{
+  "name": "blog-datasource",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.1.1",
+    "@types/node": "^20",
+    "rollup": "^4.28.0",
+    "rollup-plugin-delete": "^2.1.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "tslib": "^2.8.1"
+  },
+  "dependencies": {
+    "glob": "^11.0.0",
+    "mime": "^4.0.4",
+    "yaml": "^2.6.1"
+  }
+}
