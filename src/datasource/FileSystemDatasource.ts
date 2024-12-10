@@ -46,6 +46,13 @@ export class FileSystemDatasource<UserData> implements Datasource<UserData> {
       userDataInitialValue: {},
       ...conf,
     }
+    if (Array.isArray(this.config.pageDirectory)) {
+      for (let i = 0; i < this.config.pageDirectory.length; i++) {
+        this.config.pageDirectory[i] = path.resolve(this.config.pageDirectory[i]);
+      }
+    } else {
+      this.config.pageDirectory = path.resolve(this.config.pageDirectory)
+    }
   }
 
   private saveToIndex(items: DatasourceItem<UserData>[]) {
@@ -66,16 +73,14 @@ export class FileSystemDatasource<UserData> implements Datasource<UserData> {
   }
 
   public listPages(rootPath: string): DatasourceItem<UserData>[] {
-    const searchGlob: string = path.join(rootPath, this.config.pageSearchPattern).replaceAll('\\', '/')
-
-    return globSync(searchGlob, { cwd: process.env.BLOG_PATH }).map(
+    return globSync(this.config.pageSearchPattern, { cwd: rootPath }).map(
         v => (this.parseFile(rootPath, v))
       )
   }
 
   private parseFile(root: string, relative: string): DatasourceItem<UserData> {
     let visitPath = relative.split(path.sep)
-    const ext = path.extname(path.sep)
+    const ext = path.extname(relative)
     if (ext) {
       const t = visitPath[visitPath.length - 1]
       visitPath[visitPath.length - 1] = t.substring(0, t.length - ext.length)
