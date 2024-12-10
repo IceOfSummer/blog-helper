@@ -1,0 +1,14 @@
+packages:
+  - helper-core
+  - helper-react
+catalog:
+  ts-jest: ^29.2.5
+  tslib: ^2.8.1
+  jest: ^29.7.0
+  "@rollup/plugin-typescript": ^12.1.1
+  "@types/jest": ^29.5.14
+  "@types/node": ^20
+  rollup: ^4.28.0
+  rollup-plugin-delete: ^2.1.0
+  rollup-plugin-dts: ^6.1.1
+  "@jest/globals": ^29.7.0

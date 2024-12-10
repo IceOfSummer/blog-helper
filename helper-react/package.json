@@ -1,0 +1,24 @@
+{
+  "name": "@blog-helper/react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no __tests__ specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "catalog:",
+    "@types/jest": "catalog:",
+    "@types/node": "catalog:",
+    "jest": "catalog:",
+    "rollup": "catalog:",
+    "rollup-plugin-delete": "catalog:",
+    "rollup-plugin-dts": "catalog:",
+    "ts-jest": "catalog:",
+    "tslib": "catalog:"
+  },
+  "dependencies": {}
+}

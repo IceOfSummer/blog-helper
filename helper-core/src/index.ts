@@ -1,2 +1,2 @@
 export { FileSystemDatasource } from './datasource/FileSystemDatasource'
-export { splitMarkdownContent } from './parser/index'
+export { splitMarkdownContent } from './parser'
