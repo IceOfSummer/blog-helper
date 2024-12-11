@@ -2,14 +2,15 @@
   "name": "blog-helper",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no __tests__ specified\" && exit 1"
+    "build": "rollup -c"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@jest/globals": "catalog:",
     "@rollup/plugin-typescript": "catalog:",
     "@types/jest": "catalog:",
     "@types/node": "catalog:",
@@ -18,12 +19,17 @@
     "rollup-plugin-delete": "catalog:",
     "rollup-plugin-dts": "catalog:",
     "ts-jest": "catalog:",
-    "tslib": "catalog:",
-    "@jest/globals": "catalog:"
+    "tslib": "catalog:"
   },
   "dependencies": {
     "glob": "^11.0.0",
     "mime": "^4.0.4",
+    "rehype-stringify": "^10.0.1",
+    "remark-gfm": "^4.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.1",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0",
     "yaml": "^2.6.1"
   }
 }

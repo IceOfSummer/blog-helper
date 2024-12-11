@@ -1,0 +1,1 @@
+export { default as createMdxParser } from './MdxParser'

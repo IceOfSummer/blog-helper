@@ -14,6 +14,14 @@ class FileSystemDatasource {
             userDataInitialValue: {},
             ...conf,
         };
+        if (Array.isArray(this.config.pageDirectory)) {
+            for (let i = 0; i < this.config.pageDirectory.length; i++) {
+                this.config.pageDirectory[i] = path.resolve(this.config.pageDirectory[i]);
+            }
+        }
+        else {
+            this.config.pageDirectory = path.resolve(this.config.pageDirectory);
+        }
     }
     saveToIndex(items) {
         items.forEach(item => {
@@ -31,12 +39,11 @@ class FileSystemDatasource {
         }
     }
     listPages(rootPath) {
-        const searchGlob = path.join(rootPath, this.config.pageSearchPattern).replaceAll('\\', '/');
-        return globSync(searchGlob, { cwd: process.env.BLOG_PATH }).map(v => (this.parseFile(rootPath, v)));
+        return globSync(this.config.pageSearchPattern, { cwd: rootPath }).map(v => (this.parseFile(rootPath, v)));
     }
     parseFile(root, relative) {
         let visitPath = relative.split(path.sep);
-        const ext = path.extname(path.sep);
+        const ext = path.extname(relative);
         if (ext) {
             const t = visitPath[visitPath.length - 1];
             visitPath[visitPath.length - 1] = t.substring(0, t.length - ext.length);

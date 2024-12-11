@@ -1,6 +1,5 @@
 import { visit } from 'unist-util-visit'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const HEADING_MAP: Record<any, number> = {
   h1: 1,
   h2: 2,
@@ -10,9 +9,8 @@ const HEADING_MAP: Record<any, number> = {
 }
 
 export default function generateHeadingId() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function (tree: any) {
-    visit(tree, 'element', (node) => {
+    visit(tree, 'element', (node: any) => {
       const level = HEADING_MAP[node.tagName]
       if (!level) {
         return

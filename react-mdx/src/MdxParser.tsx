@@ -1,10 +1,9 @@
-import type { MarkdownParser, ParsedMarkdown } from '../../types'
 import React, {ReactNode} from 'react'
 import { compile, run } from '@mdx-js/mdx'
 import * as runtime from 'react/jsx-runtime'
 import * as os from "node:os";
 import createCommonHeadingWithId from './CommonHeadingWithId'
-import adjustToc from '../../common/toc-adjust-plugin'
+import {adjustTocPlugin} from 'blog-helper'
 import remarkGfm from 'remark-gfm'
 
 
@@ -39,7 +38,7 @@ export type MdxParserConfig = {
   components: Record<string, React.ComponentType<any>>
 }
 
-function createMdxParser(config?: MdxParserConfig): MarkdownParser {
+function createMdxParser(config?: MdxParserConfig) {
 
   const components = {
     h1: createCommonHeadingWithId('h1'),
@@ -52,7 +51,7 @@ function createMdxParser(config?: MdxParserConfig): MarkdownParser {
 
 
   async function parseMarkdownContent0(content: string): Promise<ReactNode> {
-    const code = String(await compile(content, { outputFormat: 'function-body', remarkPlugins: [adjustToc, remarkGfm] }))
+    const code = String(await compile(content, { outputFormat: 'function-body', remarkPlugins: [adjustTocPlugin, remarkGfm] }))
 
     const { default: MDXContent } = await run(code, {
       ...runtime,
@@ -92,7 +91,7 @@ function createMdxParser(config?: MdxParserConfig): MarkdownParser {
 
 
   return  {
-    async parse(markdown: string): Promise<ParsedMarkdown> {
+    async parse(markdown: string): Promise<React.ReactNode> {
 
       return await parseMarkdownContent(markdown)
     }

@@ -84,4 +84,11 @@ type Markdown<T = unknown> = {
  */
 declare const splitMarkdownContent: <T>(content: string[] | string, filepath?: string) => Markdown<T>;
 
-export { FileSystemDatasource, splitMarkdownContent };
+/**
+ * 调整标题等级。若 markdown 标题包含 h1，则将所有标题等级提升，确保没有 h1 标签。
+ */
+declare function adjustToc(): (tree: any) => void;
+
+declare function generateHeadingId(): (tree: any) => void;
+
+export { FileSystemDatasource, adjustToc as adjustTocPlugin, generateHeadingId as generateHeadingIdPlugin, splitMarkdownContent };

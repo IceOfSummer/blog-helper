@@ -1,0 +1,21 @@
+{
+  "name": "react-mdx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mdx-js/mdx": "^3.1.0",
+    "@types/node": "catalog:",
+    "blog-helper": "workspace:../blog-helper",
+    "remark-gfm": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.15"
+  }
+}

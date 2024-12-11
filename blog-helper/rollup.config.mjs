@@ -18,7 +18,7 @@ export default defineConfig([
       preserveModules: true
     },
     plugins: [
-      typescript(),
+      typescript({include: ["./src/**/*.ts"]}),
     ],
   },
   {
