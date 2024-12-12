@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest"
   },
   "keywords": [],
   "author": "",

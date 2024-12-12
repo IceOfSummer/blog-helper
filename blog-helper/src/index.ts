@@ -1,4 +1,5 @@
-export { FileSystemDatasource } from './datasource/FileSystemDatasource'
+export { default as searchPages } from './datasource/search'
 export { splitMarkdownContent } from './spliter'
 export { default as adjustTocPlugin }  from './parser/toc-adjust-plugin'
 export { default as generateHeadingIdPlugin } from './parser/generate-heading-id-plugin'
+export { default as createPageWithIndexBuilder } from './holder/page-index-helper'
