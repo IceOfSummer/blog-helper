@@ -2,7 +2,7 @@
   "name": "blog-helper",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/blog-helper/src/index.js",
   "type": "module",
   "scripts": {
     "build": "rollup -c",

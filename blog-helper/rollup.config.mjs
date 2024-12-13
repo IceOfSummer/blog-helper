@@ -18,13 +18,13 @@ export default defineConfig([
       preserveModules: true
     },
     plugins: [
-      typescript({include: ["./src/**/*.ts"]}),
+      typescript(),
     ],
   },
   {
     input: 'dist/types/index.d.ts',
     output: {
-      file: 'dist/index.d.ts',
+      file: 'dist/blog-helper/src/index.d.ts',
       format: 'esm',
     },
     plugins: [
