@@ -14,22 +14,22 @@ export interface MarkdownParser {
 export type WebVisitPath = string[]
 
 
-export type BaseMetadata = {
+export type BaseDatasourceMetadata = {
   /**
    * 是否为首页
    */
   isHomePage?: boolean,
-}
-
-export type DatasourceItem<UserData extends BaseMetadata> = {
-  /**
-   * 唯一标识符, 通常是文件访问路径
-   */
-  id: string;
   /**
    * 访问路径
    */
   visitPath: WebVisitPath
+}
+
+export type DatasourceItem<UserData extends BaseDatasourceMetadata = BaseDatasourceMetadata> = {
+  /**
+   * 唯一标识符, 通常是文件访问路径
+   */
+  id: string;
   /**
    * 文件类型，可以是文件路径，或者文件类型拓展符
    */

@@ -1,8 +1,8 @@
-import {BaseMetadata, DatasourceItem} from "../type";
+import {BaseDatasourceMetadata, DatasourceItem} from "../type";
 import path from "node:path";
 import {globSync} from "glob";
 
-type SearchConfig<T extends BaseMetadata> = {
+type SearchConfig<T extends BaseDatasourceMetadata> = {
   initialMetadata?: T
   /**
    * glob 搜索模式，默认为 '.&#47;**&#47;*.{md,mdx}'
@@ -18,7 +18,7 @@ type SearchConfig<T extends BaseMetadata> = {
   nestedHomePageDirectory?: string
 }
 
-const searchPages = <T extends BaseMetadata> (config: SearchConfig<T>): DatasourceItem<T>[] => {
+const searchPages = <T extends BaseDatasourceMetadata> (config: SearchConfig<T>): DatasourceItem<T>[] => {
   const nested = config.nestedHomePageDirectory ? config.nestedHomePageDirectory.split('/') : undefined
 
   const root = path.resolve(config.pageDirectory)
@@ -36,11 +36,11 @@ const searchPages = <T extends BaseMetadata> (config: SearchConfig<T>): Datasour
     const base: DatasourceItem<T> = {
       filepath: path.join(root, relative),
       type: ext,
-      visitPath,
       id: relative,
       // @ts-ignore
       metadata: {
-        isHomePage: false
+        isHomePage: false,
+        visitPath,
       }
     }
     if (nested && visitPath.length > nested.length) {
@@ -52,7 +52,7 @@ const searchPages = <T extends BaseMetadata> (config: SearchConfig<T>): Datasour
         }
       }
       if (match) {
-        base.visitPath = base.visitPath.slice(nested.length)
+        base.metadata.visitPath = base.metadata.visitPath.slice(nested.length)
         base.metadata.isHomePage = true
       }
     }

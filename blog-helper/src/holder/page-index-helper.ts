@@ -1,9 +1,9 @@
-import { BaseMetadata, DatasourceItem } from "../type";
+import { BaseDatasourceMetadata, DatasourceItem } from "../type";
 import {createArrayHashFunctionAdapter, genericArrayHashFunction, genericValueHashFunction} from "./util";
 
 type Keys = string | number | symbol
 const createPageIndexHelper =
-  <T extends BaseMetadata> (
+  <T extends BaseDatasourceMetadata> (
     items: DatasourceItem<T>[],
     indexHolder: Record<Keys, Record<Keys, DatasourceItem<T>[]>>,
     hashFunctions: Record<Keys, ValueCastFunction<unknown>>
@@ -36,7 +36,7 @@ const createPageIndexHelper =
 
 
 
-type PageHelperWithIndex<T extends BaseMetadata> = {
+export type PageHelperWithIndex<T extends BaseDatasourceMetadata> = {
   getById: (id: DatasourceItem<T>['id']) => DatasourceItem<T> | undefined
   /**
    * 根据索引寻找对应的元素
@@ -50,7 +50,7 @@ type PageHelperWithIndex<T extends BaseMetadata> = {
 
 type ValueCastFunction<T> = (val: T) => string
 
-type AddIndexArgs<T extends BaseMetadata, Key extends keyof T> =
+type AddIndexArgs<T extends BaseDatasourceMetadata, Key extends keyof T> =
   string extends T[Key]
   ? [key: Key]
   : boolean extends T[Key]
@@ -59,11 +59,11 @@ type AddIndexArgs<T extends BaseMetadata, Key extends keyof T> =
       ? [key: Key]
       : [key: Key, valueToString: ValueCastFunction<T[Key]>]
 
-type AddIndexFunction<T extends BaseMetadata> = <Key extends keyof T> (...args: AddIndexArgs<T, Key>) => PageWithIndexBuilder<T>
+type AddIndexFunction<T extends BaseDatasourceMetadata> = <Key extends keyof T> (...args: AddIndexArgs<T, Key>) => PageWithIndexBuilder<T>
 
 const ERR_MSG = "Only array type can be used on this method!"
 
-type AddIndexForArrayArgs<T extends BaseMetadata, Key extends keyof T, Element> =
+type AddIndexForArrayArgs<T extends BaseDatasourceMetadata, Key extends keyof T, Element> =
    Required<T>[Key] extends ArrayLike<infer Element>
     ? string extends Element
       ? [key: Key, valueToString?: ValueCastFunction<Element>]
@@ -75,11 +75,11 @@ type AddIndexForArrayArgs<T extends BaseMetadata, Key extends keyof T, Element> 
     : [typeof ERR_MSG]
 
 
-type AddIndexForArrayFunction<T extends BaseMetadata> = <Key extends keyof T, Element> (
+type AddIndexForArrayFunction<T extends BaseDatasourceMetadata> = <Key extends keyof T, Element> (
   ...args: AddIndexForArrayArgs<T, Key, Element>
 ) => PageWithIndexBuilder<T>
 
-type PageWithIndexBuilder<T extends BaseMetadata> = {
+type PageWithIndexBuilder<T extends BaseDatasourceMetadata> = {
   addIndex: AddIndexFunction<T>
   addIndexForArray: AddIndexForArrayFunction<T>
   build: () => PageHelperWithIndex<T>
@@ -88,7 +88,7 @@ type PageWithIndexBuilder<T extends BaseMetadata> = {
 type ValidKeys = string | number | symbol
 
 const createPageWithIndexBuilder =
-  <T extends BaseMetadata> (items: DatasourceItem<T>[]): PageWithIndexBuilder<T> => {
+  <T extends BaseDatasourceMetadata> (items: DatasourceItem<T>[]): PageWithIndexBuilder<T> => {
 
   const indexHolder: Record<ValidKeys, Record<string, DatasourceItem<T>[]>> = {}
   const hashFunctions: Record<Keys, ValueCastFunction<unknown>> = {}
@@ -117,7 +117,7 @@ const createPageWithIndexBuilder =
 
     for (let item of items) {
       const metadataValue = item.metadata[key]
-      if (!metadataValue) {
+      if (metadataValue === undefined) {
         continue
       }
       let hashKey: string = hashFunction(metadataValue)

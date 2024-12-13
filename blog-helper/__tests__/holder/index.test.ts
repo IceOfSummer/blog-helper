@@ -1,7 +1,7 @@
 import {expect, test} from '@jest/globals';
-import searchPages from "../../src/datasource/search";
+import searchPages from "../../src/uti/search";
 import createPageWithIndexBuilder from "../../src/holder/page-index-helper";
-import {BaseMetadata} from "../../src/type";
+import {BaseDatasourceMetadata} from "../../src/type";
 
 
 test('Test index build', () => {
@@ -16,11 +16,11 @@ test('Test index build', () => {
   const homePages = pgaeWithIndex.getByIndex('isHomePage', true)
   expect(homePages).toBeTruthy()
   expect(homePages!.length).toBe(1)
-  expect(homePages![0].visitPath).toStrictEqual(['nihao'])
+  expect(homePages![0].metadata.visitPath).toStrictEqual(['nihao'])
 })
 
 test('Build index with custom metadata', () => {
-  type MyMetadata = BaseMetadata & {
+  type MyMetadata = BaseDatasourceMetadata & {
     tag?: string[]
   }
   const pages = searchPages<MyMetadata>({
