@@ -87,7 +87,7 @@ type PageWithIndexBuilder<T extends BaseDatasourceMetadata> = {
 
 type ValidKeys = string | number | symbol
 
-const createPageWithIndexBuilder =
+export const createPageWithIndexBuilder =
   <T extends BaseDatasourceMetadata> (items: DatasourceItem<T>[]): PageWithIndexBuilder<T> => {
 
   const indexHolder: Record<ValidKeys, Record<string, DatasourceItem<T>[]>> = {}
@@ -149,4 +149,3 @@ const createPageWithIndexBuilder =
 
 
 
-export default createPageWithIndexBuilder

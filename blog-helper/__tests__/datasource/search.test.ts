@@ -1,5 +1,5 @@
 import {expect, test} from '@jest/globals';
-import searchPages from "../../src/uti/search";
+import {searchPages} from "../../src/uti/search";
 
 
 test('Test page list', async () => {

@@ -1,11 +1,6 @@
 import {BaseDatasourceMetadata, DatasourceItem, WebVisitPath} from "../type";
 import {Markdown} from "../uti/spliter";
-
-
-export type StaticResourceContent = {
-  base64: string
-  contentType: string
-}
+import {CommonMetadata} from "./hexo";
 
 export type Tag = string
 
@@ -20,6 +15,9 @@ export type StaticResource = {
   contentType: string
 }
 
+/**
+ * 总结常见博客通常会用到的方法。
+ */
 export interface CommonBlogDatasource<PageMetadata, DatasourceItemMetadata extends BaseDatasourceMetadata> {
   /**
    * 获取配置
@@ -30,13 +28,12 @@ export interface CommonBlogDatasource<PageMetadata, DatasourceItemMetadata exten
    * @param page 从0开始的页码
    * @param size 每页大小
    */
-  pageHomePosts(page?: number, size?: number): Promise<Readonly<Markdown<PageMetadata>[]>>
+  pageHomePosts(page?: number, size?: number): Promise<DatasourceItem<DatasourceItemMetadata>[]>
 
   /**
-   * {@link BlogDataSource#pageHomePosts} 的总博客文章数量
+   * 获取首页文件数量
    */
   homePostSize(): Promise<number>
-
   /**
    * 获取所有文章，包括首页的文章
    * <ul>
@@ -44,35 +41,33 @@ export interface CommonBlogDatasource<PageMetadata, DatasourceItemMetadata exten
    *   <li>v: 静态资源</li>
    * </ul>
    */
-  getAllPagesUrl(): Promise<Readonly<Array<DatasourceItem<DatasourceItemMetadata>>>>
+  getAllPagesUrl(): Promise<Array<DatasourceItem<DatasourceItemMetadata>>>
 
   /**
    * 获取所有静态资源.
-   * @return {} 静态资源
-   * <ul>
-   *   <li>k: 访问路径, see: {@link StaticResource#accessPath}</li>
-   *   <li>v: 静态资源</li>
-   * </ul>
    */
-  getAllStaticResource(): Promise<Readonly<DatasourceItem[]>>
+  getAllStaticResource(): Promise<DatasourceItem[]>
   /**
-   * 根据访问路径获取Post
+   * 根据访问路径获取Post. 该方法应该缓存读取结果，以确保多次调用不会出现重复读取的情况。
    * @param url url
    */
-  getPageByWebUrl(url: WebVisitPath): Promise<Readonly<Markdown<PageMetadata>> | undefined>
-
+  readContent(url: WebVisitPath): Promise<Markdown<PageMetadata> | undefined>
+  /**
+   * 根据页面访问路径获取页面
+   */
+  getPageByWebVisitPath(url: WebVisitPath): DatasourceItem<CommonMetadata> | undefined
   /**
    * 根据访问路径获取静态资源
    * @return base64 文件内容
    */
-  getStaticResourceByWebUrl(url: WebVisitPath): Promise<Readonly<StaticResource> | undefined>
+  getStaticResourceByWebUrl(url: WebVisitPath): Promise<StaticResource| undefined>
   /**
    * 获取标签下对应的所有 Post
    */
-  getTagMapping(): Promise<Map<Tag, Readonly<DatasourceItem<DatasourceItemMetadata>[]>>>
+  getTagMapping(): Promise<Map<Tag, DatasourceItem<DatasourceItemMetadata>[]>>
 
   /**
    * 获取某个分类下对应的所有 Post
    */
-  getCategoriesMapping(): Promise<Map<Category, Readonly<DatasourceItem<DatasourceItemMetadata>[]>>>
+  getCategoriesMapping(): Promise<Map<Category, DatasourceItem<DatasourceItemMetadata>[]>>
 }

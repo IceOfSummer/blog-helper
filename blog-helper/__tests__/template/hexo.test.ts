@@ -1,5 +1,5 @@
 import {expect, test} from '@jest/globals';
-import HexoDatasource from "../../src/template/hexo";
+import { HexoDatasource } from "../../src/template/hexo";
 
 
 type MyConfig = {
@@ -8,7 +8,7 @@ type MyConfig = {
 test('Test hexo datasource', async () => {
   const hexo = new HexoDatasource({
     rootDirectory: '__tests__/__source__/hexo',
-    homePageDirectory: '_posts',
+    homePageDirectory: 'source/_posts',
     pageDirectory: 'source',
     staticResourceDirectory: 'source/static'
   })
@@ -21,7 +21,7 @@ test('Test hexo datasource', async () => {
 
   const home = await hexo.pageHomePosts(0, 999)
   expect(home.length).toBe(1)
-  expect(home[0].metadata.title).toBe('World')
+  expect(home[0].metadata.visitPath[0]).toBe('world')
 
   const config = await hexo.getConfig<MyConfig>()
   expect(config.title).toBe('Hello')

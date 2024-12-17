@@ -78,4 +78,4 @@ const createPageWithIndexBuilder = (items) => {
     };
 };
 
-export { createPageWithIndexBuilder as default };
+export { createPageWithIndexBuilder };

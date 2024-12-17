@@ -65,4 +65,4 @@ function cached({ cacheKeyBuilder, maxSize = 1000, onlySingleValue } = {}) {
     };
 }
 
-export { cached as default };
+export { cached };

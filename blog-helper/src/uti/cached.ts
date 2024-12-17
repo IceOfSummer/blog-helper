@@ -50,7 +50,7 @@ const createSingleValueHolder = (): CacheHolderLike=> {
 /**
  * 缓存某个类中方法的返回值.
  */
-export default function cached({cacheKeyBuilder, maxSize = 1000, onlySingleValue}: CacheConfig = {}) {
+export function cached({cacheKeyBuilder, maxSize = 1000, onlySingleValue}: CacheConfig = {}) {
   return function(_: unknown, __: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value
 

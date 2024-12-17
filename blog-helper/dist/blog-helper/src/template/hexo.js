@@ -3,9 +3,9 @@ import { splitMarkdownContent } from '../uti/spliter.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'yaml';
-import createPageWithIndexBuilder from '../holder/page-index-helper.js';
-import searchPages from '../uti/search.js';
-import cached from '../uti/cached.js';
+import { createPageWithIndexBuilder } from '../holder/page-index-helper.js';
+import { searchPages } from '../uti/search.js';
+import { cached } from '../uti/cached.js';
 import mime from 'mime';
 
 /**
@@ -24,7 +24,7 @@ class HexoDatasource {
         };
         const pages = searchPages({
             pageDirectory: path.join(this.config.rootDirectory, this.config.pageDirectory),
-            nestedHomePageDirectory: config.homePageDirectory
+            nestedHomePageDirectory: path.join(this.config.rootDirectory, config.homePageDirectory)
         });
         this.parseAllPages(pages);
         const resources = searchPages({
@@ -44,6 +44,10 @@ class HexoDatasource {
             // .addIndexForArray('categories')
             .addIndexForArray('visitPath')
             .build();
+    }
+    getPageByWebVisitPath(url) {
+        const holder = this.pageWithIndex.getByIndex('visitPath', url);
+        return holder.length ? holder[0] : undefined;
     }
     /**
      * 解析所有页面，并添加元数据到 {@link DatasourceItem} 上
@@ -81,8 +85,7 @@ class HexoDatasource {
     pageHomePosts(page = 0, size = 8) {
         const pages = this.pageWithIndex.getByIndex('isHomePage', true);
         const start = page * size;
-        const target = pages.slice(start, start + size);
-        return Promise.resolve(target.map(t => this.readPageContent(t.filepath)));
+        return Promise.resolve(pages.slice(start, start + size));
     }
     homePostSize() {
         return Promise.resolve(this.pageWithIndex.getByIndex('isHomePage', true).length);
@@ -93,7 +96,7 @@ class HexoDatasource {
     async getAllStaticResource() {
         return this.staticResourceIndex.listAll();
     }
-    getPageByWebUrl(url) {
+    readContent(url) {
         const items = this.pageWithIndex.getByIndex('visitPath', url);
         if (items.length === 0) {
             return Promise.resolve(undefined);
@@ -156,4 +159,4 @@ __decorate([
     cached({ onlySingleValue: true })
 ], HexoDatasource.prototype, "getCategoriesMapping", null);
 
-export { HexoDatasource as default };
+export { HexoDatasource };

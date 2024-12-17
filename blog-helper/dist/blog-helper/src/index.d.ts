@@ -1,3 +1,13 @@
+/**
+ * html 富文本字符串
+ */
+type HTML = string;
+interface MarkdownParser {
+    /**
+     * 解析markdown
+     */
+    parse(markdown: string): Promise<HTML>;
+}
 type WebVisitPath = string[];
 type BaseDatasourceMetadata = {
     /**
@@ -89,10 +99,16 @@ declare const createPageWithIndexBuilder: <T extends BaseDatasourceMetadata>(ite
 
 type Tag = string;
 type Category = string;
+type BaseStaticResourceMetadata = {
+    contentType: string;
+} & BaseDatasourceMetadata;
 type StaticResource = {
     base64: string;
     contentType: string;
 };
+/**
+ * 总结常见博客通常会用到的方法。
+ */
 interface CommonBlogDatasource<PageMetadata, DatasourceItemMetadata extends BaseDatasourceMetadata> {
     /**
      * 获取配置
@@ -103,9 +119,9 @@ interface CommonBlogDatasource<PageMetadata, DatasourceItemMetadata extends Base
      * @param page 从0开始的页码
      * @param size 每页大小
      */
-    pageHomePosts(page?: number, size?: number): Promise<Readonly<Markdown<PageMetadata>[]>>;
+    pageHomePosts(page?: number, size?: number): Promise<DatasourceItem<DatasourceItemMetadata>[]>;
     /**
-     * {@link BlogDataSource#pageHomePosts} 的总博客文章数量
+     * 获取首页文件数量
      */
     homePostSize(): Promise<number>;
     /**
@@ -115,34 +131,33 @@ interface CommonBlogDatasource<PageMetadata, DatasourceItemMetadata extends Base
      *   <li>v: 静态资源</li>
      * </ul>
      */
-    getAllPagesUrl(): Promise<Readonly<Array<DatasourceItem<DatasourceItemMetadata>>>>;
+    getAllPagesUrl(): Promise<Array<DatasourceItem<DatasourceItemMetadata>>>;
     /**
      * 获取所有静态资源.
-     * @return {} 静态资源
-     * <ul>
-     *   <li>k: 访问路径, see: {@link StaticResource#accessPath}</li>
-     *   <li>v: 静态资源</li>
-     * </ul>
      */
-    getAllStaticResource(): Promise<Readonly<DatasourceItem[]>>;
+    getAllStaticResource(): Promise<DatasourceItem[]>;
     /**
-     * 根据访问路径获取Post
+     * 根据访问路径获取Post. 该方法应该缓存读取结果，以确保多次调用不会出现重复读取的情况。
      * @param url url
      */
-    getPageByWebUrl(url: WebVisitPath): Promise<Readonly<Markdown<PageMetadata>> | undefined>;
+    readContent(url: WebVisitPath): Promise<Markdown<PageMetadata> | undefined>;
+    /**
+     * 根据页面访问路径获取页面
+     */
+    getPageByWebVisitPath(url: WebVisitPath): DatasourceItem<CommonMetadata> | undefined;
     /**
      * 根据访问路径获取静态资源
      * @return base64 文件内容
      */
-    getStaticResourceByWebUrl(url: WebVisitPath): Promise<Readonly<StaticResource> | undefined>;
+    getStaticResourceByWebUrl(url: WebVisitPath): Promise<StaticResource | undefined>;
     /**
      * 获取标签下对应的所有 Post
      */
-    getTagMapping(): Promise<Map<Tag, Readonly<DatasourceItem<DatasourceItemMetadata>[]>>>;
+    getTagMapping(): Promise<Map<Tag, DatasourceItem<DatasourceItemMetadata>[]>>;
     /**
      * 获取某个分类下对应的所有 Post
      */
-    getCategoriesMapping(): Promise<Map<Category, Readonly<DatasourceItem<DatasourceItemMetadata>[]>>>;
+    getCategoriesMapping(): Promise<Map<Category, DatasourceItem<DatasourceItemMetadata>[]>>;
 }
 
 type HexoDatasourceConfig = {
@@ -171,21 +186,22 @@ declare class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implemen
     private pageWithIndex;
     private staticResourceIndex;
     constructor(config: HexoDatasourceConfig);
+    getPageByWebVisitPath(url: WebVisitPath): DatasourceItem<CommonMetadata> | undefined;
     /**
      * 解析所有页面，并添加元数据到 {@link DatasourceItem} 上
      * @private
      */
     private parseAllPages;
     private readPageContent;
-    getConfig<T = Record<string, any>>(): Promise<Readonly<T>>;
-    pageHomePosts(page?: number | undefined, size?: number | undefined): Promise<readonly Markdown<PageMetadata>[]>;
+    getConfig<T = Record<string, any>>(): Promise<T>;
+    pageHomePosts(page?: number | undefined, size?: number | undefined): Promise<DatasourceItem<CommonMetadata>[]>;
     homePostSize(): Promise<number>;
-    getAllPagesUrl(): Promise<readonly DatasourceItem<CommonMetadata>[]>;
-    getAllStaticResource(): Promise<Readonly<DatasourceItem[]>>;
-    getPageByWebUrl(url: WebVisitPath): Promise<Readonly<Markdown<PageMetadata>> | undefined>;
-    getStaticResourceByWebUrl(url: WebVisitPath): Promise<Readonly<StaticResource> | undefined>;
-    getTagMapping(): Promise<Map<Tag, Readonly<DatasourceItem<CommonMetadata>[]>>>;
-    getCategoriesMapping(): Promise<Map<Tag, Readonly<DatasourceItem<CommonMetadata>[]>>>;
+    getAllPagesUrl(): Promise<DatasourceItem<CommonMetadata>[]>;
+    getAllStaticResource(): Promise<DatasourceItem[]>;
+    readContent(url: WebVisitPath): Promise<Markdown<PageMetadata> | undefined>;
+    getStaticResourceByWebUrl(url: WebVisitPath): Promise<StaticResource | undefined>;
+    getTagMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>>;
+    getCategoriesMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>>;
 }
 
 type CacheConfig = {
@@ -208,4 +224,8 @@ type CacheConfig = {
  */
 declare function cached({ cacheKeyBuilder, maxSize, onlySingleValue }?: CacheConfig): (_: unknown, __: string, descriptor: PropertyDescriptor) => void;
 
-export { HexoDatasource, adjustToc as adjustTocPlugin, cached, createPageWithIndexBuilder, generateHeadingId as generateHeadingIdPlugin, searchPages, splitMarkdownContent };
+declare function createMdParser(): {
+    parse(markdown: string): Promise<string>;
+};
+
+export { type BaseDatasourceMetadata, type BaseStaticResourceMetadata, type CacheConfig, type Category, type CommonBlogDatasource, type CommonMetadata, type DatasourceItem, type HexoBasePageMetadata, HexoDatasource, type Markdown, type MarkdownParser, type PageHelperWithIndex, type StaticResource, type Tag, type WebVisitPath, adjustToc as adjustTocPlugin, cached, createMdParser, createPageWithIndexBuilder, generateHeadingId as generateHeadingIdPlugin, searchPages, splitMarkdownContent };

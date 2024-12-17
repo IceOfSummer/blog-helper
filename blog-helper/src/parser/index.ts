@@ -7,7 +7,7 @@ import rehypeStringify from 'rehype-stringify'
 import generateHeadingId from "./generate-heading-id-plugin";
 
 
-function createMdParser() {
+export function createMdParser() {
 
   const markdownToHtml = async (markdownContent: string): Promise<string> => {
     const parsed = await unified()
@@ -28,4 +28,3 @@ function createMdParser() {
   }
 }
 
-export default createMdParser

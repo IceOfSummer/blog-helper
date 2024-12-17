@@ -2,7 +2,15 @@ import path from 'node:path';
 import { globSync } from 'glob';
 
 const searchPages = (config) => {
-    const nested = config.nestedHomePageDirectory ? config.nestedHomePageDirectory.split('/') : undefined;
+    let nested;
+    if (config.nestedHomePageDirectory) {
+        const relative = path.relative(config.pageDirectory, config.nestedHomePageDirectory);
+        if (relative.startsWith('..')) {
+            throw Error('nestedHomePageDirectory must be nested in pageDirectory!');
+        }
+        nested = path.normalize(relative).split(path.sep);
+    }
+    // const nested = config.nestedHomePageDirectory ? config.nestedHomePageDirectory.split('/') : undefined
     const root = path.resolve(config.pageDirectory);
     const items = globSync(config.searchPattern ?? './**/*.{md,mdx}', { cwd: root });
     return items.map(relative => {
@@ -39,4 +47,4 @@ const searchPages = (config) => {
     });
 };
 
-export { searchPages as default };
+export { searchPages };

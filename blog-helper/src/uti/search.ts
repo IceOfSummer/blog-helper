@@ -1,6 +1,7 @@
 import {BaseDatasourceMetadata, DatasourceItem} from "../type";
 import path from "node:path";
 import {globSync} from "glob";
+import os from "node:os";
 
 type SearchConfig<T extends BaseDatasourceMetadata> = {
   initialMetadata?: T
@@ -18,8 +19,16 @@ type SearchConfig<T extends BaseDatasourceMetadata> = {
   nestedHomePageDirectory?: string
 }
 
-const searchPages = <T extends BaseDatasourceMetadata> (config: SearchConfig<T>): DatasourceItem<T>[] => {
-  const nested = config.nestedHomePageDirectory ? config.nestedHomePageDirectory.split('/') : undefined
+export const searchPages = <T extends BaseDatasourceMetadata> (config: SearchConfig<T>): DatasourceItem<T>[] => {
+  let nested: string[] | undefined
+  if (config.nestedHomePageDirectory) {
+    const relative = path.relative(config.pageDirectory, config.nestedHomePageDirectory)
+    if (relative.startsWith('..')) {
+      throw Error('nestedHomePageDirectory must be nested in pageDirectory!')
+    }
+    nested = path.normalize(relative).split(path.sep)
+  }
+  // const nested = config.nestedHomePageDirectory ? config.nestedHomePageDirectory.split('/') : undefined
 
   const root = path.resolve(config.pageDirectory)
   const items = globSync(config.searchPattern ?? './**/*.{md,mdx}', { cwd: root })
@@ -60,4 +69,3 @@ const searchPages = <T extends BaseDatasourceMetadata> (config: SearchConfig<T>)
   })
 }
 
-export default searchPages

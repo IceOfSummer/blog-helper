@@ -5,6 +5,7 @@ import * as os from "node:os";
 import createCommonHeadingWithId from './CommonHeadingWithId'
 import {adjustTocPlugin} from 'blog-helper'
 import remarkGfm from 'remark-gfm'
+import type {MDXProps} from "mdx/types";
 
 
 type ParseError = Error & {
@@ -35,7 +36,7 @@ function takeAboveLines(self: string[], lines: string[], startLine: number, line
 }
 
 export type MdxParserConfig = {
-  components: Record<string, React.ComponentType<any>>
+  components: MDXProps['components']
 }
 
 function createMdxParser(config?: MdxParserConfig) {
