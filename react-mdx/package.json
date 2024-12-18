@@ -1,18 +1,20 @@
 {
-  "name": "react-mdx",
+  "name": "@blog-helper/react-mdx",
   "version": "1.0.0-pre1",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
+  "private": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "IceOfSummer",
+  "homepage": "https://github.com/IceOfSummer/blog-helper",
   "license": "ISC",
   "dependencies": {
     "@mdx-js/mdx": "^3.1.0",
     "@types/node": "catalog:",
-    "blog-helper": "workspace:../blog-helper",
+    "blog-helper": "workspace:*",
     "react": "^18",
     "remark-gfm": "^4.0.0"
   },

@@ -9,7 +9,8 @@
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest"
   },
   "keywords": [],
-  "author": "",
+  "author": "IceOfSummer",
+  "homepage": "https://github.com/IceOfSummer/blog-helper",
   "license": "ISC",
   "devDependencies": {
     "@jest/globals": "catalog:",
