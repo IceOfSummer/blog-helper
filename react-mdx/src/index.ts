@@ -1,1 +1,1 @@
-export { default as createMdxParser } from './MdxParser'
+export * from './MdxParser'

@@ -12,7 +12,7 @@ export default tseslint.config({
       global: true
     },
   },
-  ignores: ['node_modules/**', 'blog-helper/dist/**'],
+  ignores: ['node_modules/**', 'blog-helper/dist/**', 'react-mdx/dist/**'],
   rules: {
     'quotes': ['error', 'single'],
     'key-spacing': ['error', { 'beforeColon': false }],

@@ -3,6 +3,8 @@
     "lib": ["esnext"],
     "target": "ES2023",
     "allowJs": true,
+    "declaration": true,
+    "declarationDir": "dist/types",
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
@@ -11,7 +13,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "experimentalDecorators": true
   },
   "ts-node": {

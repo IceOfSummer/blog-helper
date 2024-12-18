@@ -40,7 +40,7 @@ export type MdxParserConfig = {
   components: MDXProps['components']
 }
 
-function createMdxParser(config?: MdxParserConfig) {
+export function createMdxParser(config?: MdxParserConfig) {
 
   const components = {
     h1: createCommonHeadingWithId('h1'),
@@ -99,4 +99,3 @@ function createMdxParser(config?: MdxParserConfig) {
   }
 }
 
-export default createMdxParser

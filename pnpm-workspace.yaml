@@ -1,5 +1,5 @@
 packages:
-  - helper-core
+  - blog-helper
   - react-mdx
 catalog:
   ts-jest: ^29.2.5

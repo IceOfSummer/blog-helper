@@ -1,11 +1,11 @@
 {
   "name": "@blog-helper/react-mdx",
-  "version": "1.0.0-pre1",
+  "version": "1.0.0-pre2",
   "description": "",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "private": false,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c"
   },
   "keywords": [],
   "author": "IceOfSummer",
@@ -13,10 +13,15 @@
   "license": "ISC",
   "dependencies": {
     "@mdx-js/mdx": "^3.1.0",
+    "@rollup/plugin-typescript": "catalog:",
     "@types/node": "catalog:",
     "blog-helper": "workspace:*",
     "react": "^18",
-    "remark-gfm": "^4.0.0"
+    "remark-gfm": "^4.0.0",
+    "rollup": "catalog:",
+    "rollup-plugin-delete": "catalog:",
+    "rollup-plugin-dts": "catalog:",
+    "tslib": "catalog:"
   },
   "devDependencies": {
     "@types/mdx": "^2.0.13",
