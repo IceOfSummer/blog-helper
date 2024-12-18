@@ -1,5 +1,5 @@
 import {expect, test} from '@jest/globals';
-import createMdParser from "../../src/parser";
+import {createMdParser} from "../../src/parser";
 import fs from "node:fs";
 
 

@@ -1,6 +1,6 @@
 import {expect, test} from '@jest/globals';
-import searchPages from "../../src/uti/search";
-import createPageWithIndexBuilder from "../../src/holder/page-index-helper";
+import {searchPages} from "../../src/uti/search";
+import {createPageSourceBuilder} from "../../src/holder/page-index-helper";
 import {BaseDatasourceMetadata} from "../../src/type";
 
 
@@ -10,8 +10,8 @@ test('Test index build', () => {
     nestedHomePageDirectory: 'cn',
   })
 
-  const pgaeWithIndex = createPageWithIndexBuilder(pages)
-    .addIndex('isHomePage')
+  const pgaeWithIndex = createPageSourceBuilder(pages)
+    .addIndex('isHomePage', (v => v?.toString() ?? 'empty'))
     .build()
   const homePages = pgaeWithIndex.getByIndex('isHomePage', true)
   expect(homePages).toBeTruthy()
@@ -31,7 +31,7 @@ test('Build index with custom metadata', () => {
   pages[0].metadata.tag = ['one', 'hello']
   pages[1].metadata.tag = ['two']
 
-  const pageWithIndex = createPageWithIndexBuilder(pages)
+  const pageWithIndex = createPageSourceBuilder(pages)
     .addIndexForArray('tag')
     .build()
 

@@ -2,12 +2,12 @@ import { BaseDatasourceMetadata, DatasourceItem } from "../type";
 import {createArrayHashFunctionAdapter, genericArrayHashFunction, genericValueHashFunction} from "./util";
 
 type Keys = string | number | symbol
-const createPageIndexHelper =
+const createPageSource =
   <T extends BaseDatasourceMetadata> (
     items: DatasourceItem<T>[],
     indexHolder: Record<Keys, Record<Keys, DatasourceItem<T>[]>>,
     hashFunctions: Record<Keys, ValueCastFunction<unknown>>
-  ): PageHelperWithIndex<T> => {
+  ): PagesSource<T> => {
 
   // id 索引
   const idIndex = new Map<string, DatasourceItem<T>>()
@@ -36,7 +36,7 @@ const createPageIndexHelper =
 
 
 
-export type PageHelperWithIndex<T extends BaseDatasourceMetadata> = {
+export type PagesSource<T extends BaseDatasourceMetadata> = {
   getById: (id: DatasourceItem<T>['id']) => DatasourceItem<T> | undefined
   /**
    * 根据索引寻找对应的元素
@@ -52,11 +52,11 @@ type ValueCastFunction<T> = (val: T) => string
 
 type AddIndexArgs<T extends BaseDatasourceMetadata, Key extends keyof T> =
   string extends T[Key]
-  ? [key: Key]
+  ? [key: Key, valueToString?: ValueCastFunction<T[Key]>]
   : boolean extends T[Key]
-    ? [key: Key]
+    ? [key: Key, valueToString?: ValueCastFunction<T[Key]>]
     : number extends T[Key]
-      ? [key: Key]
+      ? [key: Key, valueToString?: ValueCastFunction<T[Key]>]
       : [key: Key, valueToString: ValueCastFunction<T[Key]>]
 
 type AddIndexFunction<T extends BaseDatasourceMetadata> = <Key extends keyof T> (...args: AddIndexArgs<T, Key>) => PageWithIndexBuilder<T>
@@ -82,12 +82,12 @@ type AddIndexForArrayFunction<T extends BaseDatasourceMetadata> = <Key extends k
 type PageWithIndexBuilder<T extends BaseDatasourceMetadata> = {
   addIndex: AddIndexFunction<T>
   addIndexForArray: AddIndexForArrayFunction<T>
-  build: () => PageHelperWithIndex<T>
+  build: () => PagesSource<T>
 }
 
 type ValidKeys = string | number | symbol
 
-export const createPageWithIndexBuilder =
+export const createPageSourceBuilder =
   <T extends BaseDatasourceMetadata> (items: DatasourceItem<T>[]): PageWithIndexBuilder<T> => {
 
   const indexHolder: Record<ValidKeys, Record<string, DatasourceItem<T>[]>> = {}
@@ -140,7 +140,7 @@ export const createPageWithIndexBuilder =
       return this
     },
     build() {
-      return createPageIndexHelper(items, indexHolder, hashFunctions)
+      return createPageSource(items, indexHolder, hashFunctions)
     }
   }
 

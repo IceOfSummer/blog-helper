@@ -4,7 +4,7 @@ import {BaseDatasourceMetadata, DatasourceItem, WebVisitPath} from "../type";
 import fs from "node:fs";
 import path from "node:path";
 import yaml from "yaml";
-import {createPageWithIndexBuilder, PageHelperWithIndex} from "../holder/page-index-helper";
+import {createPageSourceBuilder, PagesSource} from "../holder/page-index-helper";
 import {searchPages} from "../uti/search";
 import {cached} from "../uti/cached";
 import mime from 'mime'
@@ -38,9 +38,9 @@ export class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implement
 
   private config: Required<HexoDatasourceConfig>
 
-  private pageWithIndex: PageHelperWithIndex<CommonMetadata>
+  private pageWithIndex: PagesSource<CommonMetadata>
 
-  private staticResourceIndex: PageHelperWithIndex<BaseStaticResourceMetadata>
+  private staticResourceIndex: PagesSource<BaseStaticResourceMetadata>
 
   constructor(config: HexoDatasourceConfig) {
     this.config = {
@@ -63,11 +63,11 @@ export class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implement
       resource.metadata.contentType = mime.getType(resource.filepath) ?? ''
     }
 
-    this.staticResourceIndex = createPageWithIndexBuilder(resources)
+    this.staticResourceIndex = createPageSourceBuilder(resources)
       .addIndexForArray('visitPath')
       .build()
 
-    this.pageWithIndex = createPageWithIndexBuilder<CommonMetadata>(pages)
+    this.pageWithIndex = createPageSourceBuilder<CommonMetadata>(pages)
       .addIndex('isHomePage')
       // no need for this
       // .addIndexForArray('tags')
