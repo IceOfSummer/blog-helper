@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm'
 import adjustToc from './toc-adjust-plugin'
 import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
-import generateHeadingId from "./generate-heading-id-plugin";
+import generateHeadingId from './generate-heading-id-plugin'
 
 
 export function createMdParser() {

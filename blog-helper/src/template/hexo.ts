@@ -1,12 +1,14 @@
-import {BaseStaticResourceMetadata, CommonBlogDatasource, StaticResource, Tag} from "./type";
-import {Markdown, splitMarkdownContent} from "../uti/spliter";
-import {BaseDatasourceMetadata, DatasourceItem, WebVisitPath} from "../type";
-import fs from "node:fs";
-import path from "node:path";
-import yaml from "yaml";
-import {createPageSourceBuilder, PagesSource} from "../holder/page-index-helper";
-import {searchPages} from "../uti/search";
-import {cached} from "../uti/cached";
+import type { BaseStaticResourceMetadata, CommonBlogDatasource, StaticResource, Tag } from './type'
+import type { Markdown } from '../uti/spliter'
+import { splitMarkdownContent } from '../uti/spliter'
+import type { BaseDatasourceMetadata, DatasourceItem, WebVisitPath } from '../type'
+import fs from 'node:fs'
+import path from 'node:path'
+import yaml from 'yaml'
+import type { PagesSource } from '../holder/page-index-helper'
+import { createPageSourceBuilder } from '../holder/page-index-helper'
+import { searchPages } from '../uti/search'
+import { cached } from '../uti/cached'
 import mime from 'mime'
 
 type HexoDatasourceConfig = {
@@ -59,7 +61,7 @@ export class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implement
       pageDirectory: path.join(this.config.rootDirectory, this.config.staticResourceDirectory),
       searchPattern: './**/*'
     })
-    for (let resource of resources) {
+    for (const resource of resources) {
       resource.metadata.contentType = mime.getType(resource.filepath) ?? ''
     }
 
@@ -96,7 +98,7 @@ export class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implement
       return []
     }
 
-    for (let item of items) {
+    for (const item of items) {
       const markdown = this.readPageContent(item.filepath)
       item.metadata.tags = asArray(markdown.metadata.tags)
       item.metadata.categories = asArray(markdown.metadata.categories)
@@ -109,14 +111,14 @@ export class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implement
     return splitMarkdownContent(content, path)
   }
 
-  @cached({onlySingleValue: true})
-  getConfig<T = Record<string, any>>(): Promise<T> {
+  @cached({ onlySingleValue: true })
+  getConfig<T = Record<string, unknown>>(): Promise<T> {
     let configFile
     if (!fs.existsSync((configFile = path.resolve(this.config.rootDirectory, '_config.yml')))
       && !fs.existsSync((configFile = path.resolve(this.config.rootDirectory, '_config.yaml')))) {
       throw new Error('Could not find config file from both _config.yml and _config.yaml')
     }
-    const parsed = yaml.parse(fs.readFileSync(configFile, {encoding: 'utf8'}))
+    const parsed = yaml.parse(fs.readFileSync(configFile, { encoding: 'utf8' }))
     return Promise.resolve(parsed)
   }
 
@@ -155,12 +157,12 @@ export class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implement
     const target = items[0]
 
     return Promise.resolve({
-      base64: fs.readFileSync(target.filepath, {encoding: 'base64'}),
+      base64: fs.readFileSync(target.filepath, { encoding: 'base64' }),
       contentType: target.metadata.contentType
     })
   }
 
-  @cached({onlySingleValue: true})
+  @cached({ onlySingleValue: true })
   async getTagMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>> {
     const pages = this.pageWithIndex.listAll()
     const r = new Map<Tag, DatasourceItem<CommonMetadata>[]>()
@@ -177,7 +179,7 @@ export class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implement
     return r
   }
 
-  @cached({onlySingleValue: true})
+  @cached({ onlySingleValue: true })
   async getCategoriesMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>> {
     const pages = this.pageWithIndex.listAll()
     const r = new Map<Tag, DatasourceItem<CommonMetadata>[]>()

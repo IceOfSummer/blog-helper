@@ -75,23 +75,23 @@ export const splitMarkdownContent = <T> (content: string[] | string, filepath: s
       break
     }
     switch (metadataCollectStatus) {
-      case CollectStatus.EXPECT_START: {
-        if (line.startsWith('---')) {
-          metadataCollectStatus = CollectStatus.EXPECT_END
-        }
+    case CollectStatus.EXPECT_START: {
+      if (line.startsWith('---')) {
+        metadataCollectStatus = CollectStatus.EXPECT_END
+      }
+      break
+    }
+    case CollectStatus.EXPECT_END: {
+      if (line.startsWith('---')) {
+        metadataCollectStatus = CollectStatus.DONE
         break
       }
-      case CollectStatus.EXPECT_END: {
-        if (line.startsWith('---')) {
-          metadataCollectStatus = CollectStatus.DONE
-          break
-        }
-        metadataStrArr.push(line)
-        break
-      }
+      metadataStrArr.push(line)
+      break
+    }
 
-      default:
-        throw new Error('Unreachable branch!')
+    default:
+      throw new Error('Unreachable branch!')
     }
   }
 
@@ -99,7 +99,7 @@ export const splitMarkdownContent = <T> (content: string[] | string, filepath: s
   if (metadataCollectStatus !== CollectStatus.DONE) {
     return {
       content: Array.isArray(content) ? content.join(os.EOL) : content,
-      // @ts-ignore
+      // @ts-expect-error give a default value
       metadata: {}
     }
   }
@@ -121,7 +121,7 @@ export const splitMarkdownContent = <T> (content: string[] | string, filepath: s
   }
   return {
     content: contentArr.slice(metadataStrArr.length + 2).join(os.EOL),
-    // @ts-ignore
+    // @ts-expect-error force cast here
     metadata,
   }
 

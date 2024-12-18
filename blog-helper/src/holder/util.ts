@@ -15,11 +15,11 @@ export const genericArrayHashFunction: ValueCastFunction<string[]|number[]|boole
 
 export const createArrayHashFunctionAdapter =
   <T>(elementHashFunc: ValueCastFunction<T>): ValueCastFunction<T[]> => {
-  return val => {
-    const v: string[] = []
-    for (let t of val) {
-      v.push(elementHashFunc(t))
+    return val => {
+      const v: string[] = []
+      for (const t of val) {
+        v.push(elementHashFunc(t))
+      }
+      return v.join('.')
     }
-    return v.join('.')
   }
-}

@@ -53,7 +53,7 @@ type SearchConfig<T extends BaseDatasourceMetadata> = {
      */
     nestedHomePageDirectory?: string;
 };
-declare const searchPages: <T extends BaseDatasourceMetadata>(config: SearchConfig<T>) => DatasourceItem<T>[];
+declare const searchPages: <T extends BaseDatasourceMetadata>(config: SearchConfig<T>) => DatasourceItem<T>[]
 
 type Markdown<T = unknown> = {
     metadata: T;
@@ -64,7 +64,7 @@ type Markdown<T = unknown> = {
  * @param content Markdown内容，提供一个以换行符分割的数组或者整个字符串，后者将会被转化为前者
  * @param filepath 文件路径，当解析 markdown 错误时，将会带上文件路径以便于排查
  */
-declare const splitMarkdownContent: <T>(content: string[] | string, filepath?: string) => Markdown<T>;
+declare const splitMarkdownContent: <T>(content: string[] | string, filepath?: string) => Markdown<T>
 
 /**
  * 调整标题等级。若 markdown 标题包含 h1，则将所有标题等级提升，确保没有 h1 标签。
@@ -87,7 +87,7 @@ type PageHelperWithIndex<T extends BaseDatasourceMetadata> = {
 type ValueCastFunction<T> = (val: T) => string;
 type AddIndexArgs<T extends BaseDatasourceMetadata, Key extends keyof T> = string extends T[Key] ? [key: Key] : boolean extends T[Key] ? [key: Key] : number extends T[Key] ? [key: Key] : [key: Key, valueToString: ValueCastFunction<T[Key]>];
 type AddIndexFunction<T extends BaseDatasourceMetadata> = <Key extends keyof T>(...args: AddIndexArgs<T, Key>) => PageWithIndexBuilder<T>;
-declare const ERR_MSG = "Only array type can be used on this method!";
+declare const ERR_MSG = 'Only array type can be used on this method!'
 type AddIndexForArrayArgs<T extends BaseDatasourceMetadata, Key extends keyof T, Element> = Required<T>[Key] extends ArrayLike<infer Element> ? string extends Element ? [key: Key, valueToString?: ValueCastFunction<Element>] : number extends Element ? [key: Key, valueToString?: ValueCastFunction<Element>] : boolean extends Element ? [key: Key, valueToString?: ValueCastFunction<Element>] : [key: Key, valueToString: ValueCastFunction<Element>] : [typeof ERR_MSG];
 type AddIndexForArrayFunction<T extends BaseDatasourceMetadata> = <Key extends keyof T, Element>(...args: AddIndexForArrayArgs<T, Key, Element>) => PageWithIndexBuilder<T>;
 type PageWithIndexBuilder<T extends BaseDatasourceMetadata> = {
@@ -95,7 +95,7 @@ type PageWithIndexBuilder<T extends BaseDatasourceMetadata> = {
     addIndexForArray: AddIndexForArrayFunction<T>;
     build: () => PageHelperWithIndex<T>;
 };
-declare const createPageWithIndexBuilder: <T extends BaseDatasourceMetadata>(items: DatasourceItem<T>[]) => PageWithIndexBuilder<T>;
+declare const createPageWithIndexBuilder: <T extends BaseDatasourceMetadata>(items: DatasourceItem<T>[]) => PageWithIndexBuilder<T>
 
 type Tag = string;
 type Category = string;
@@ -182,26 +182,26 @@ type HexoBasePageMetadata = {
  * - Metadata: 为防止文章太多而爆内存，从 `PageMetadata` 提取部分字段用于构建索引
  */
 declare class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implements CommonBlogDatasource<PageMetadata, CommonMetadata> {
-    private config;
-    private pageWithIndex;
-    private staticResourceIndex;
-    constructor(config: HexoDatasourceConfig);
-    getPageByWebVisitPath(url: WebVisitPath): DatasourceItem<CommonMetadata> | undefined;
-    /**
+  private config
+  private pageWithIndex
+  private staticResourceIndex
+  constructor(config: HexoDatasourceConfig);
+  getPageByWebVisitPath(url: WebVisitPath): DatasourceItem<CommonMetadata> | undefined;
+  /**
      * 解析所有页面，并添加元数据到 {@link DatasourceItem} 上
      * @private
      */
-    private parseAllPages;
-    private readPageContent;
-    getConfig<T = Record<string, any>>(): Promise<T>;
-    pageHomePosts(page?: number | undefined, size?: number | undefined): Promise<DatasourceItem<CommonMetadata>[]>;
-    homePostSize(): Promise<number>;
-    getAllPagesUrl(): Promise<DatasourceItem<CommonMetadata>[]>;
-    getAllStaticResource(): Promise<DatasourceItem[]>;
-    readContent(url: WebVisitPath): Promise<Markdown<PageMetadata> | undefined>;
-    getStaticResourceByWebUrl(url: WebVisitPath): Promise<StaticResource | undefined>;
-    getTagMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>>;
-    getCategoriesMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>>;
+  private parseAllPages
+  private readPageContent
+  getConfig<T = Record<string, any>>(): Promise<T>;
+  pageHomePosts(page?: number | undefined, size?: number | undefined): Promise<DatasourceItem<CommonMetadata>[]>;
+  homePostSize(): Promise<number>;
+  getAllPagesUrl(): Promise<DatasourceItem<CommonMetadata>[]>;
+  getAllStaticResource(): Promise<DatasourceItem[]>;
+  readContent(url: WebVisitPath): Promise<Markdown<PageMetadata> | undefined>;
+  getStaticResourceByWebUrl(url: WebVisitPath): Promise<StaticResource | undefined>;
+  getTagMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>>;
+  getCategoriesMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>>;
 }
 
 type CacheConfig = {
@@ -228,4 +228,4 @@ declare function createMdParser(): {
     parse(markdown: string): Promise<string>;
 };
 
-export { type BaseDatasourceMetadata, type BaseStaticResourceMetadata, type CacheConfig, type Category, type CommonBlogDatasource, type CommonMetadata, type DatasourceItem, type HexoBasePageMetadata, HexoDatasource, type Markdown, type MarkdownParser, type PageHelperWithIndex, type StaticResource, type Tag, type WebVisitPath, adjustToc as adjustTocPlugin, cached, createMdParser, createPageWithIndexBuilder, generateHeadingId as generateHeadingIdPlugin, searchPages, splitMarkdownContent };
+export { type BaseDatasourceMetadata, type BaseStaticResourceMetadata, type CacheConfig, type Category, type CommonBlogDatasource, type CommonMetadata, type DatasourceItem, type HexoBasePageMetadata, HexoDatasource, type Markdown, type MarkdownParser, type PageHelperWithIndex, type StaticResource, type Tag, type WebVisitPath, adjustToc as adjustTocPlugin, cached, createMdParser, createPageWithIndexBuilder, generateHeadingId as generateHeadingIdPlugin, searchPages, splitMarkdownContent }

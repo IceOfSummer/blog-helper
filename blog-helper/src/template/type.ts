@@ -1,6 +1,6 @@
-import {BaseDatasourceMetadata, DatasourceItem, WebVisitPath} from "../type";
-import {Markdown} from "../uti/spliter";
-import {CommonMetadata} from "./hexo";
+import type { BaseDatasourceMetadata, DatasourceItem, WebVisitPath } from '../type'
+import type { Markdown } from '../uti/spliter'
+import type { CommonMetadata } from './hexo'
 
 export type Tag = string
 

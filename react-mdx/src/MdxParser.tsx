@@ -1,11 +1,12 @@
-import React, {ReactNode} from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 import { compile, run } from '@mdx-js/mdx'
 import * as runtime from 'react/jsx-runtime'
-import * as os from "node:os";
+import * as os from 'node:os'
 import createCommonHeadingWithId from './CommonHeadingWithId'
-import {adjustTocPlugin} from 'blog-helper'
+import { adjustTocPlugin } from 'blog-helper'
 import remarkGfm from 'remark-gfm'
-import type {MDXProps} from "mdx/types";
+import type { MDXProps } from 'mdx/types'
 
 
 type ParseError = Error & {
@@ -56,7 +57,6 @@ function createMdxParser(config?: MdxParserConfig) {
 
     const { default: MDXContent } = await run(code, {
       ...runtime,
-      // @ts-ignore
       baseUrl: import.meta.url,
     })
 

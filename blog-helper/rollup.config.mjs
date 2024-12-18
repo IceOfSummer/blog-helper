@@ -1,8 +1,7 @@
 // rollup.config.mjs
 import typescript from '@rollup/plugin-typescript'
-import {defineConfig} from 'rollup'
+import { defineConfig } from 'rollup'
 import dts from 'rollup-plugin-dts'
-import { globSync } from 'glob';
 import del from 'rollup-plugin-delete'
 
 if (process.env.NODE_ENV === undefined) {

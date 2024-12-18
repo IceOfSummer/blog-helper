@@ -1,7 +1,7 @@
-import {expect, test} from '@jest/globals';
-import {searchPages} from "../../src/uti/search";
-import {createPageSourceBuilder} from "../../src/holder/page-index-helper";
-import {BaseDatasourceMetadata} from "../../src/type";
+import { expect, test } from '@jest/globals'
+import { searchPages } from '../../src/uti/search'
+import { createPageSourceBuilder } from '../../src/holder/page-index-helper'
+import type { BaseDatasourceMetadata } from '../../src/type'
 
 
 test('Test index build', () => {

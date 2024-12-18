@@ -1,7 +1,6 @@
-import {BaseDatasourceMetadata, DatasourceItem} from "../type";
-import path from "node:path";
-import {globSync} from "glob";
-import os from "node:os";
+import type { BaseDatasourceMetadata, DatasourceItem } from '../type'
+import path from 'node:path'
+import { globSync } from 'glob'
 
 type SearchConfig<T extends BaseDatasourceMetadata> = {
   initialMetadata?: T
@@ -46,7 +45,7 @@ export const searchPages = <T extends BaseDatasourceMetadata> (config: SearchCon
       filepath: path.join(root, relative),
       type: ext,
       id: relative,
-      // @ts-ignore
+      // @ts-expect-error this type is BaseMetadata
       metadata: {
         isHomePage: false,
         visitPath,

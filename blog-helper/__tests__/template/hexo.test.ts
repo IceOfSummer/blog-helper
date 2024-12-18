@@ -1,5 +1,5 @@
-import {expect, test} from '@jest/globals';
-import { HexoDatasource } from "../../src/template/hexo";
+import { expect, test } from '@jest/globals'
+import { HexoDatasource } from '../../src/template/hexo'
 
 
 type MyConfig = {
