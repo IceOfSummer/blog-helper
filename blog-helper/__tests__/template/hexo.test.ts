@@ -14,7 +14,7 @@ test('Test hexo datasource', async () => {
   })
 
 
-  const urls = await hexo.getAllPagesUrl()
+  const urls = await hexo.getAllPages()
   expect(urls.length).toBe(2)
   expect(urls.find(url => url.metadata.visitPath[0] === 'hello')).not.toBeFalsy()
   expect(urls.find(url => url.metadata.visitPath[0] === 'world')).not.toBeFalsy()

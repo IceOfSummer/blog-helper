@@ -132,7 +132,7 @@ export class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implement
     return Promise.resolve(this.pageWithIndex.getByIndex('isHomePage', true).length)
   }
 
-  getAllPagesUrl(): Promise<DatasourceItem<CommonMetadata>[]> {
+  getAllPages(): Promise<DatasourceItem<CommonMetadata>[]> {
     return Promise.resolve(this.pageWithIndex.listAll())
   }
 
@@ -149,7 +149,7 @@ export class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implement
     return Promise.resolve(this.readPageContent(target.filepath))
   }
 
-  getStaticResourceByWebUrl(url: WebVisitPath): Promise<StaticResource | undefined> {
+  readStaticResourceByWebUrl(url: WebVisitPath): Promise<StaticResource | undefined> {
     const items = this.staticResourceIndex.getByIndex('visitPath', url)
     if (items.length === 0) {
       return Promise.resolve(undefined)

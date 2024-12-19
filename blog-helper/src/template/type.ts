@@ -31,17 +31,13 @@ export interface CommonBlogDatasource<PageMetadata, DatasourceItemMetadata exten
   pageHomePosts(page?: number, size?: number): Promise<DatasourceItem<DatasourceItemMetadata>[]>
 
   /**
-   * 获取首页文件数量
+   * 获取首页页面数量
    */
   homePostSize(): Promise<number>
   /**
-   * 获取所有文章，包括首页的文章
-   * <ul>
-   *   <li>k: 访问路径</li>
-   *   <li>v: 静态资源</li>
-   * </ul>
+   * 获取所有页面
    */
-  getAllPagesUrl(): Promise<Array<DatasourceItem<DatasourceItemMetadata>>>
+  getAllPages(): Promise<Array<DatasourceItem<DatasourceItemMetadata>>>
 
   /**
    * 获取所有静态资源.
@@ -60,7 +56,7 @@ export interface CommonBlogDatasource<PageMetadata, DatasourceItemMetadata exten
    * 根据访问路径获取静态资源
    * @return base64 文件内容
    */
-  getStaticResourceByWebUrl(url: WebVisitPath): Promise<StaticResource| undefined>
+  readStaticResourceByWebUrl(url: WebVisitPath): Promise<StaticResource| undefined>
   /**
    * 获取标签下对应的所有 Post
    */
