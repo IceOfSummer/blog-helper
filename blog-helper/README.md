@@ -3,30 +3,32 @@
 > [!CAUTION]
 > 目前正处于测试阶段!
 
-一个帮助开发者快速构建博客的工具库。
+一个工具库，用于帮助开发者快速构建基于 SSG 模式输出的博客。
 
-通常，我们构建一个博客需要如下的流程：
+---
+
+通常，我们构建一个 SSG 博客需要如下的流程：
 
 1. 搜索博客文件(例如 markdown 文件)并确定访问路径(一个博客通常会分为普通页面和首页页面，需要将文件路径转换为网页访问路径)
 2. 解析博客文件，读取文件内容，提取顶部元数据
 3. 渲染，即将文件内容转换为 html
 4. 展示
 
-其中，前 3 步与博客架构使用的基础框架基本无关，即无论是使用 Vue.js 还是 React.js，对于前 3 步所使用的代码，两者之间甚至可以直接复用。
+其中，前 3 步与博客架构使用的基础框架基本无关，即无论是使用 Vue.js、React.js 或者其它框架，对于前 3 步所使用的代码，两者之间基本可以直接复用。
 
-**所以本库主要是完成前 3 步(包括)的步骤**，而开发者只需要关注最后一步，就可以快速的搭建一个博客了。
-
----
-
-> [!IMPORTANT]
-> 本工具库主要为 SSG 模式打造，内部实现存在很多缓存，可能无法直接使用于 SSR 或 CSR 模式。
+所以本库主要是**协助**完成前 3 步(包括)的步骤，减轻开发者的心智负担。
 
 主要功能:
 
 - markdown 扫描
 - markdown 解析/渲染为 HTML
 - mdx 支持(仅支持 React)
-- 内置有关 hexo 博客迁移的支持
+- 提供有关 hexo 博客迁移的支持
+
+## Example
+
+[nextjs-particlex-theme/particlex](https://github.com/nextjs-particlex-theme/particlex/blob/refactor/export/src/api/svc/impl/BlogServiceImpl.ts): 
+一个基于 [Next.js](https://nextjs.org/) 的博客框架。 
 
 ## 快速开始
 
@@ -53,6 +55,8 @@ console.log(home)
 // ...
 ```
 **静态资源只能存放在一个目录中，不可以和页面混放！虽然 hexo 支持混放，但是在 SSG 框架中很难处理混放的场景。**
+
+更多方法详见: [HexoDatasource](https://github.com/IceOfSummer/blog-helper/wiki/Api#hexodatasource)
 
 ### 自定义流程 
 
@@ -108,21 +112,24 @@ const resourceSource = createPageSourceBuilder<BaseDatasourceMetadata>(resources
 // ...
 ```
 
-有关 `createPageSourceBuilder` 的更多信息，可以查看 [API 文档](https://github.com/IceOfSummer/blog-helper/wiki/Api#createPageSourceBuilder)
+更多详细信息请查阅:
+
+- [createPageSourceBuilder](https://github.com/IceOfSummer/blog-helper/wiki/Api#createPageSourceBuilder)
+- [searchPages](https://github.com/IceOfSummer/blog-helper/wiki/Api#searchpages)
 
 ###### 关于索引
 
-索引的值由 `createPageSourceBuilder` 的泛型决定，默认类型为:
+索引的值由 [createPageSourceBuilder](https://github.com/IceOfSummer/blog-helper/wiki/Api#createPageSourceBuilder) 的泛型决定，默认类型为:
 
 ```typescript
 export type BaseDatasourceMetadata = {
   isHomePage?: boolean,
-  visitPath: WebVisitPath /* string */
+  visitPath: WebVisitPath /* string[] */
 }
 ```
 
-你可以为所有的字段构建索引，内部会使用 `Map` 保存对应的页面。关于 `Map` 的键，如果值的类型是 `string | number | boolean`，
-那么内部将会自动生成对应的键；否则你需要手动指示如何生成键(也可以覆盖默认的生成规则):
+你可以为所有的字段构建索引，如果值的类型是 `string | number | boolean`， 那么内部将会自动生成对应索引的键；
+否则你需要手动指示如何生成键(也可以覆盖默认的生成规则):
 
 ```typescript
   const pgaeWithIndex = createPageWithIndexBuilder(pages)
@@ -207,7 +214,7 @@ import { createMdParser } from 'blog-helper'
 
 const markdownParser = createMdParser()
 
-const html = await markdownParser.parse(markdown)
+const html: string = await markdownParser.parse(markdown)
 ```
 
 ##### 添加 mdx 支持(仅支持 React)
@@ -215,22 +222,27 @@ const html = await markdownParser.parse(markdown)
 本库还提供了 mdx 支持，需要单独安装：
 
 ```shell
-npm i react-mdx --save
+npm i @blog-helper/react-mdx --save
 ```
 
-**该库仅支持 React + TypeScript 的环境**
+**该库仅支持 React 环境**
 
 ```typescript
 import { createMdxParser } from '@blog-helper/react-mdx'
 
-const mdxParser0 = createMdxParser({
+const mdxParser = createMdxParser({
   components: {
     /* Your custom components. */
   }
 })
 
-const reactNode: React.ReactNode = mdxParser0.parse(markdown)
+const reactNode: React.ReactNode = mdxParser.parse(markdown)
 ```
 
 有关 `components` 参数，详细请参考[官方文档](https://mdxjs.com/guides/injecting-components/)
 
+## 其它
+
+- [最佳实践](https://github.com/IceOfSummer/blog-helper/wiki/Best-Practice)
+- [Api](https://github.com/IceOfSummer/blog-helper/wiki/Api)
+- [Types](https://github.com/IceOfSummer/blog-helper/wiki/Types)
