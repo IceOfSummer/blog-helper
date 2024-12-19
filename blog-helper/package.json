@@ -1,9 +1,10 @@
 {
   "name": "blog-helper",
-  "version": "1.0.0-pre2",
+  "version": "1.0.0-pre3",
   "description": "",
   "main": "dist/blog-helper/src/index.js",
   "type": "module",
+  "types": "dist/blog-helper/src/index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest"

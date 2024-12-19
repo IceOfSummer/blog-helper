@@ -1,8 +1,10 @@
 {
   "name": "@blog-helper/react-mdx",
-  "version": "1.0.0-pre2",
+  "version": "1.0.0-pre3",
   "description": "",
   "main": "dist/index.js",
+  "type": "module",
+  "types": "dist/index.d.ts",
   "private": false,
   "scripts": {
     "build": "rollup -c"

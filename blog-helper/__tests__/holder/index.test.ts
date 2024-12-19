@@ -7,7 +7,7 @@ import type { BaseDatasourceMetadata } from '../../src/type'
 test('Test index build', () => {
   const pages = searchPages({
     pageDirectory: '__tests__/__source__/basic/',
-    nestedHomePageDirectory: 'cn',
+    nestedHomePageDirectory: '__tests__/__source__/basic/cn',
   })
 
   const pgaeWithIndex = createPageSourceBuilder(pages)
@@ -25,7 +25,7 @@ test('Build index with custom metadata', () => {
   }
   const pages = searchPages<MyMetadata>({
     pageDirectory: '__tests__/__source__/basic/',
-    nestedHomePageDirectory: 'cn',
+    nestedHomePageDirectory: '__tests__/__source__/basic/cn',
   })
   expect(pages.length).toBe(3)
   pages[0].metadata.tag = ['one', 'hello']
