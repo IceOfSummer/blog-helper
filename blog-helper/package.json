@@ -1,6 +1,6 @@
 {
   "name": "blog-helper",
-  "version": "1.0.0-pre3",
+  "version": "1.0.0-pre4",
   "description": "",
   "main": "dist/blog-helper/src/index.js",
   "type": "module",

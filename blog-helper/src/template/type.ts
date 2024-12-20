@@ -28,26 +28,26 @@ export interface CommonBlogDatasource<PageMetadata, DatasourceItemMetadata exten
    * @param page 从0开始的页码
    * @param size 每页大小
    */
-  pageHomePosts(page?: number, size?: number): Promise<DatasourceItem<DatasourceItemMetadata>[]>
+  pageHomePosts(page?: number, size?: number): DatasourceItem<DatasourceItemMetadata>[]
 
   /**
    * 获取首页页面数量
    */
-  homePostSize(): Promise<number>
+  homePostSize(): number
   /**
    * 获取所有页面
    */
-  getAllPages(): Promise<Array<DatasourceItem<DatasourceItemMetadata>>>
+  getAllPages(): Array<DatasourceItem<DatasourceItemMetadata>>
 
   /**
    * 获取所有静态资源.
    */
-  getAllStaticResource(): Promise<DatasourceItem[]>
+  getAllStaticResource(): DatasourceItem[]
   /**
    * 根据访问路径获取Post. 该方法应该缓存读取结果，以确保多次调用不会出现重复读取的情况。
    * @param url url
    */
-  readContent(url: WebVisitPath): Promise<Markdown<PageMetadata> | undefined>
+  readContent(url: WebVisitPath): Markdown<PageMetadata> | undefined
   /**
    * 根据页面访问路径获取页面
    */
@@ -56,14 +56,14 @@ export interface CommonBlogDatasource<PageMetadata, DatasourceItemMetadata exten
    * 根据访问路径获取静态资源
    * @return base64 文件内容
    */
-  readStaticResourceByWebUrl(url: WebVisitPath): Promise<StaticResource| undefined>
+  readStaticResourceByWebUrl(url: WebVisitPath): StaticResource| undefined
   /**
    * 获取标签下对应的所有 Post
    */
-  getTagMapping(): Promise<Map<Tag, DatasourceItem<DatasourceItemMetadata>[]>>
+  getTagMapping(): Map<Tag, DatasourceItem<DatasourceItemMetadata>[]>
 
   /**
    * 获取某个分类下对应的所有 Post
    */
-  getCategoriesMapping(): Promise<Map<Category, DatasourceItem<DatasourceItemMetadata>[]>>
+  getCategoriesMapping(): Map<Category, DatasourceItem<DatasourceItemMetadata>[]>
 }

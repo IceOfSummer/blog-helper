@@ -112,58 +112,57 @@ export class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implement
   }
 
   @cached({ onlySingleValue: true })
-  getConfig<T = Record<string, unknown>>(): Promise<T> {
+  getConfig<T = Record<string, unknown>>(): T {
     let configFile
     if (!fs.existsSync((configFile = path.resolve(this.config.rootDirectory, '_config.yml')))
       && !fs.existsSync((configFile = path.resolve(this.config.rootDirectory, '_config.yaml')))) {
       throw new Error('Could not find config file from both _config.yml and _config.yaml')
     }
-    const parsed = yaml.parse(fs.readFileSync(configFile, { encoding: 'utf8' }))
-    return Promise.resolve(parsed)
+    return yaml.parse(fs.readFileSync(configFile, { encoding: 'utf8' }))
   }
 
-  pageHomePosts(page: number | undefined = 0, size: number | undefined = 8): Promise<DatasourceItem<CommonMetadata>[]> {
+  pageHomePosts(page: number | undefined = 0, size: number | undefined = 8): DatasourceItem<CommonMetadata>[] {
     const pages = this.pageWithIndex.getByIndex('isHomePage', true)
     const start = page * size
-    return Promise.resolve(pages.slice(start, start + size))
+    return pages.slice(start, start + size)
   }
 
-  homePostSize(): Promise<number> {
-    return Promise.resolve(this.pageWithIndex.getByIndex('isHomePage', true).length)
+  homePostSize(): number {
+    return this.pageWithIndex.getByIndex('isHomePage', true).length
   }
 
-  getAllPages(): Promise<DatasourceItem<CommonMetadata>[]> {
-    return Promise.resolve(this.pageWithIndex.listAll())
+  getAllPages(): DatasourceItem<CommonMetadata>[] {
+    return this.pageWithIndex.listAll()
   }
 
-  async getAllStaticResource(): Promise<DatasourceItem[]> {
+  getAllStaticResource(): DatasourceItem[] {
     return this.staticResourceIndex.listAll()
   }
 
-  readContent(url: WebVisitPath): Promise<Markdown<PageMetadata> | undefined> {
+  readContent(url: WebVisitPath): Markdown<PageMetadata> | undefined {
     const items = this.pageWithIndex.getByIndex('visitPath', url)
     if (items.length === 0) {
-      return Promise.resolve(undefined)
+      return
     }
     const target = items[0]
-    return Promise.resolve(this.readPageContent(target.filepath))
+    return this.readPageContent(target.filepath)
   }
 
-  readStaticResourceByWebUrl(url: WebVisitPath): Promise<StaticResource | undefined> {
+  readStaticResourceByWebUrl(url: WebVisitPath): StaticResource | undefined {
     const items = this.staticResourceIndex.getByIndex('visitPath', url)
     if (items.length === 0) {
-      return Promise.resolve(undefined)
+      return undefined
     }
     const target = items[0]
 
-    return Promise.resolve({
+    return {
       base64: fs.readFileSync(target.filepath, { encoding: 'base64' }),
       contentType: target.metadata.contentType
-    })
+    }
   }
 
   @cached({ onlySingleValue: true })
-  async getTagMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>> {
+  getTagMapping(): Map<Tag, DatasourceItem<CommonMetadata>[]> {
     const pages = this.pageWithIndex.listAll()
     const r = new Map<Tag, DatasourceItem<CommonMetadata>[]>()
     for (const page of pages) {
@@ -180,7 +179,7 @@ export class HexoDatasource<PageMetadata extends HexoBasePageMetadata> implement
   }
 
   @cached({ onlySingleValue: true })
-  async getCategoriesMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>> {
+  getCategoriesMapping(): Map<Tag, DatasourceItem<CommonMetadata>[]> {
     const pages = this.pageWithIndex.listAll()
     const r = new Map<Tag, DatasourceItem<CommonMetadata>[]>()
     for (const page of pages) {

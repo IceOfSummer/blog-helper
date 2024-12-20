@@ -1,6 +1,6 @@
 {
   "name": "@blog-helper/react-mdx",
-  "version": "1.0.0-pre3",
+  "version": "1.0.0-pre4",
   "description": "",
   "main": "dist/index.js",
   "type": "module",

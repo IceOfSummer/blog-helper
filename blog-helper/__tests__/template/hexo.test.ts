@@ -14,16 +14,16 @@ test('Test hexo datasource', async () => {
   })
 
 
-  const urls = await hexo.getAllPages()
+  const urls = hexo.getAllPages()
   expect(urls.length).toBe(2)
   expect(urls.find(url => url.metadata.visitPath[0] === 'hello')).not.toBeFalsy()
   expect(urls.find(url => url.metadata.visitPath[0] === 'world')).not.toBeFalsy()
 
-  const home = await hexo.pageHomePosts(0, 999)
+  const home = hexo.pageHomePosts(0, 999)
   expect(home.length).toBe(1)
   expect(home[0].metadata.visitPath[0]).toBe('world')
 
-  const config = await hexo.getConfig<MyConfig>()
+  const config = hexo.getConfig<MyConfig>()
   expect(config.title).toBe('Hello')
 })
 
