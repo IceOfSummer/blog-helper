@@ -15,13 +15,21 @@ test('Test hexo datasource', async () => {
 
 
   const urls = hexo.getAllPages()
-  expect(urls.length).toBe(2)
   expect(urls.find(url => url.metadata.visitPath[0] === 'hello')).not.toBeFalsy()
   expect(urls.find(url => url.metadata.visitPath[0] === 'world')).not.toBeFalsy()
 
-  const home = hexo.pageHomePosts(0, 999)
+  let home = hexo.pageHomePosts(0, 2)
+  const result: string[] = []
+
+  expect(home.length).toBe(2)
+  result.push(...home.map(v => v.metadata.visitPath[0]))
+
+  home = hexo.pageHomePosts(1, 2)
   expect(home.length).toBe(1)
-  expect(home[0].metadata.visitPath[0]).toBe('world')
+  result.push(...home.map(v => v.metadata.visitPath[0]))
+
+  result.sort()
+  expect(result).toStrictEqual(['world', 'world2', 'world3'])
 
   const config = hexo.getConfig<MyConfig>()
   expect(config.title).toBe('Hello')
