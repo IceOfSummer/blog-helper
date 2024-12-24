@@ -1,44 +1,40 @@
 # blog-helper
 
+> [!CAUTION]
+> 目前正处于测试阶段!
 
-[中文文档](https://github.com/IceOfSummer/blog-helper/blob/master/README-zh.md)
-
-A utility library, helping developers to build blogs that are based on SSG mode swiftly.
-
+一个工具库，用于帮助开发者快速构建基于 SSG 模式输出的博客。
 
 ---
 
-Generally, we have these steps to build a blog:
+通常，我们构建一个 SSG 博客需要如下的流程：
 
-1. Search blog files (such as markdown files) and confirm the visit path.
-2. Read and parse the file content; distill the metadata in the file.
-3. Rendering, that is, converting the file content into HTML.
-4. Display.
+1. 搜索博客文件(例如 markdown 文件)并确定访问路径
+2. 解析博客文件，读取文件内容，提取顶部元数据
+3. 渲染，即将文件内容转换为 html
+4. 展示
 
-Among these steps, the previous three steps have no relation to your base framework, whether it is Vue.js, React.js, or another framework.
-The code in these steps can be basically reused.
+其中，前 3 步与博客架构使用的基础框架基本无关，即无论是使用 Vue.js、React.js 或者其它框架，对于前 3 步所使用的代码，两者之间基本可以直接复用。
 
-So the main goal of this library is to **assist** developers in finishing the three steps.
+所以本库主要是**协助**完成前 3 步(包括)的步骤，减轻开发者的心智负担。
 
+主要功能:
 
-Major features:
-
-- Markdown scan
-- Markdown parse and render
-- MDX support (Only supports React)
-- The support to migrate from Hexo.
-
+- markdown 扫描
+- markdown 解析/渲染为 HTML
+- mdx 支持(仅支持 React)
+- 提供有关 hexo 博客迁移的支持
 
 ## Example
 
 [nextjs-particlex-theme/particlex](https://github.com/nextjs-particlex-theme/particlex/blob/refactor/export/src/api/svc/impl/BlogServiceImpl.ts):
-A blog base on [Next.js](https://nextjs.org/).
+一个基于 [Next.js](https://nextjs.org/) 的博客框架。
 
-## Quick start
+## 快速开始
 
-### Migrate from Hexo
+### 从 Hexo 博客迁移
 
-We will help you finish the previous two steps and encapsulate some commonly used methods:
+该类将会为你完成除了第三步渲染之外的步骤，并且封装一些常用的方法:
 
 ```typescript
 import { HexoDatasource } from 'blog-helper'
@@ -59,15 +55,18 @@ console.log(home)
 // ...
 ```
 
-See [HexoDatasource](https://github.com/IceOfSummer/blog-helper/wiki/Api#hexodatasource) for more details.
+更多方法详见: [HexoDatasource](https://github.com/IceOfSummer/blog-helper/wiki/Api#hexodatasource)
 
-### Custom Steps
+### 自定义流程
 
-#### 1. Search Blog Files
+#### 1. 搜索博客文件
 
-This step only searches the pages and determines the web visit URL, not reads the actual content.
+该过程仅扫描有哪些页面，并获取对应的访问路径，该过程不会实际读取文件内容。
 
-Assume that we have such blog structure:
+> [!NOTE]
+> 详细可以参考: [holder/index.test.ts](blog-helper/__tests__/holder/index.test.ts)
+
+假设博客目录结构如下:
 
 ```
 root
@@ -77,9 +76,10 @@ root
 │     └── logo.png
 ├── hello.md
 └── world.md
+
 ```
 
-We can search all the pages and static resources like this:
+扫描所有的页面和静态资源:
 
 ```typescript
 import { searchPages, createPageWithIndexBuilder, BaseDatasourceMetadata } from 'blog-helper'
@@ -89,17 +89,17 @@ const pages = searchPages({
     nestedHomePageDirectory: '<path_to_root>/root/cn',
 })
 
-// build index
+// 构建索引
 const pageSource = createPageSourceBuilder<BaseDatasourceMetadata>(pages)
   .addIndex('isHomePage')
   .build()
 
-// get pages by index
+// 获取所有首页页面
 const homePages = pageSource.getByIndex('isHomePage', true)
-// get all pages
+// 获取所有页面
 const allPages = pageSource.listAll()
 
-// build index for static resource(optional).
+// 为静态资源构建索引
 const resources = searchPages<BaseStaticResourceMetadata>({
   pageDirectory: '<path_to_root>/root',
   searchPattern: './static/**/*'
@@ -111,17 +111,15 @@ const resourceSource = createPageSourceBuilder<BaseDatasourceMetadata>(resources
 // ...
 ```
 
-
-See the links below for more details:
+更多详细信息请查阅:
 
 - [holder/index.test.ts](https://github.com/IceOfSummer/blog-helper/blob/master/blog-helper/__tests__/holder/index.test.ts)
-- [API/createPageSourceBuilder](https://github.com/IceOfSummer/blog-helper/wiki/Api#createPageSourceBuilder)
-- [API/searchPages](https://github.com/IceOfSummer/blog-helper/wiki/Api#searchpages)
+- [createPageSourceBuilder](https://github.com/IceOfSummer/blog-helper/wiki/Api#createPageSourceBuilder)
+- [searchPages](https://github.com/IceOfSummer/blog-helper/wiki/Api#searchpages)
 
-###### About Index
+###### 关于索引
 
-[//]: # (The value type of the index is determined by [createPageSourceBuilder]&#40;https://github.com/IceOfSummer/blog-helper/wiki/Api#createPageSourceBuilder&#41;'s generic.)
-Basic metadata type is:
+索引的值由 [createPageSourceBuilder](https://github.com/IceOfSummer/blog-helper/wiki/Api#createPageSourceBuilder) 的泛型决定，默认类型为:
 
 ```typescript
 export type BaseDatasourceMetadata = {
@@ -130,18 +128,18 @@ export type BaseDatasourceMetadata = {
 }
 ```
 
-You can build an index for all the properties. If the type of value is `string | number | boolean`, we can generate the index key automatically.
-Otherwise, you have to give the second argument to generate the index key (you can use it to override the default too):
+你可以为所有的字段构建索引，如果值的类型是 `string | number | boolean`， 那么内部将会自动生成对应索引的键；
+否则你需要手动指示如何生成键(也可以覆盖默认的生成规则):
 
 ```typescript
   const pgaeWithIndex = createPageWithIndexBuilder(pages)
-  .addIndex('isHomePage', (v => v?.toString() ?? ''))
+  .addIndex('isHomePage', (v => v?.toString() ?? 'empty'))
   .build()
 ```
 
-###### Build Index For Array Type
+###### 为数组类型生成索引
 
-If the type of value is `string[] | number[] | boolean[]`, we can build the index key automatically too, but please use `addIndexForArray` instead:
+如果元数据数组类型，并且类型是 `string[] | number[] | boolean[]`，那么同样也可以自动构建索引，不过请使用 `addIndexForArray`:
 
 ```typescript
 type MyMetadata = BaseDatasourceMetadata & {
@@ -164,10 +162,10 @@ expect(pages[0]).toStrictEqual(pageWithIndex.getByIndex('tag', ['one', 'hello'])
 expect(pages[1]).toStrictEqual(pageWithIndex.getByIndex('tag', ['two'])[0])
 ```
 
-#### 2. Markdown Parse
+#### 2. markdown 解析
 
 
-Use `splitMarkdownContent` to parse Markdown. The format of the Markdown is required to be like this(Top metadata is optional):
+使用 `splitMarkdownContent` 即可对 markdown 进行简单解析，该方法要求 markdown 的格式如下：
 
 ```markdown
 ---
@@ -180,7 +178,7 @@ obj:
 Markdown Content
 ```
 
-Parse：
+解析：
 
 ```typescript
 import { splitMarkdownContent } from 'blog-helper'
@@ -206,9 +204,9 @@ console.log(markdown.metadata.obj?.foo)
 console.log(markdown.content)
 ```
 
-#### 3. Render
+#### 3. 渲染
 
-##### Render Markdown To HTML
+##### 渲染 markdown 为 HTML
 
 ```typescript
 import { createMdParser } from 'blog-helper'
@@ -219,18 +217,19 @@ const markdownParser = createMdParser()
 const html: string = await markdownParser.parse(markdown)
 ```
 
-##### MDX Support (React Only)
+##### 添加 mdx 支持(仅支持 React)
 
 > [!IMPORTANT]
-> For Next.js users, consider using [next-mdx-remote](https://nextjs.org/docs/app/building-your-application/configuring/mdx#remote-mdx).
+> 对于 Next.js 用户，请考虑使用 [next-mdx-remote](https://nextjs.org/docs/app/building-your-application/configuring/mdx#remote-mdx).
 
-We also support MDX rendering; you have to install it standalone:
+
+本库还提供了 mdx 支持，需要单独安装：
 
 ```shell
 npm i @blog-helper/react-mdx --save
 ```
 
-**This library only support React environment**
+**该库仅支持 React 环境**
 
 ```typescript
 import { createMdxParser } from '@blog-helper/react-mdx'
@@ -244,10 +243,10 @@ const mdxParser = createMdxParser({
 const reactNode: React.ReactNode = mdxParser.parse(markdown)
 ```
 
-About the `components`, see [offical docs](https://mdxjs.com/guides/injecting-components/) for more details.
+有关 `components` 参数，详细请参考[官方文档](https://mdxjs.com/guides/injecting-components/)
 
-## Others
+## 其它
 
-- [Best Practice](https://github.com/IceOfSummer/blog-helper/wiki/Best-Practice)
+- [最佳实践](https://github.com/IceOfSummer/blog-helper/wiki/Best-Practice)
 - [Api](https://github.com/IceOfSummer/blog-helper/wiki/Api)
 - [Types](https://github.com/IceOfSummer/blog-helper/wiki/Types)
