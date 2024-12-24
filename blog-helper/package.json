@@ -1,7 +1,7 @@
 {
   "name": "blog-helper",
-  "version": "1.0.0-pre4",
-  "description": "",
+  "version": "1.0.0",
+  "description": "A utility library, helping developers to build blogs that are based on SSG mode swiftly.一个工具库，用于帮助开发者快速构建基于 SSG 模式输出的博客",
   "main": "dist/blog-helper/src/index.js",
   "type": "module",
   "types": "dist/blog-helper/src/index.d.ts",
@@ -9,10 +9,10 @@
     "build": "rollup -c",
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest"
   },
-  "keywords": [],
+  "keywords": ["blog", "markdown", "blog-helper", "util", "ssg"],
   "author": "IceOfSummer",
   "homepage": "https://github.com/IceOfSummer/blog-helper",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@jest/globals": "catalog:",
     "@rollup/plugin-typescript": "catalog:",
