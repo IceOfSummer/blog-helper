@@ -14,18 +14,20 @@
   "homepage": "https://github.com/IceOfSummer/blog-helper",
   "license": "MIT",
   "dependencies": {
-    "@mdx-js/mdx": "^3.1.0",
-    "@rollup/plugin-typescript": "catalog:",
-    "@types/node": "catalog:",
+    "remark-gfm": "^4.0.0"
+  },
+  "peerDependencies": {
     "blog-helper": "workspace:*",
-    "react": "^18",
-    "remark-gfm": "^4.0.0",
+    "react": "^18"
+  },
+  "devDependencies": {
     "rollup": "catalog:",
     "rollup-plugin-delete": "catalog:",
     "rollup-plugin-dts": "catalog:",
-    "tslib": "catalog:"
-  },
-  "devDependencies": {
+    "tslib": "catalog:",
+    "@mdx-js/mdx": "^3.1.0",
+    "@rollup/plugin-typescript": "catalog:",
+    "@types/node": "catalog:",
     "@types/mdx": "^2.0.13",
     "@types/react": "^18.3.15"
   }
